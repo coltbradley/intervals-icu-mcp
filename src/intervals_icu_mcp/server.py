@@ -338,8 +338,8 @@ def main():
     host = os.environ.get("MCP_HOST", "0.0.0.0")
     port = int(os.environ.get("MCP_PORT", "8787"))
 
-    if transport == "sse":
-        mcp.run(transport="sse", host=host, port=port)
+    if transport in ("sse", "streamable-http"):
+        mcp.run(transport=transport, host=host, port=port)
     else:
         mcp.run()
 
