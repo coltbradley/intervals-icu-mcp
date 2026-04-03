@@ -16,6 +16,8 @@ COPY pyproject.toml uv.lock* README.md ./
 COPY src/ ./src/
 
 # Install dependencies into a virtual environment
+# UV_LINK_MODE=copy needed for ZFS/overlay filesystems (TrueNAS)
+ENV UV_LINK_MODE=copy
 RUN uv sync --frozen --no-dev
 
 # Final stage - minimal runtime image
