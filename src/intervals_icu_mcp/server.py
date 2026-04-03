@@ -339,7 +339,7 @@ def main():
     port = int(os.environ.get("MCP_PORT", "8787"))
 
     if transport in ("sse", "streamable-http"):
-        mcp.run(transport=transport, host=host, port=port)
+        mcp.run(transport=transport, host=host, port=port, stateless_http=True)
     else:
         mcp.run()
 
