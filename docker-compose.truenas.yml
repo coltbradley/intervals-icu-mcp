@@ -1,0 +1,40 @@
+# TrueNAS SCALE — deploy via Apps or docker compose
+#
+# UPDATING: Every push to main automatically publishes a new :latest image.
+# Watchtower checks every 5 minutes and auto-restarts on new images.
+#
+# Manual update:
+#   docker pull ghcr.io/coltbradley/intervals-icu-mcp:latest
+#   docker restart intervals-icu-mcp
+#
+# Required environment variables (set in TrueNAS app config UI):
+#   INTERVALS_ICU_API_KEY     - Intervals.icu API key
+#   INTERVALS_ICU_ATHLETE_ID  - Intervals.icu athlete ID (e.g., i531252)
+#
+# Optional:
+#   MCP_PORT                  - SSE server port (default: 8787)
+
+services:
+  intervals-icu-mcp:
+    image: ghcr.io/coltbradley/intervals-icu-mcp:latest
+    container_name: intervals-icu-mcp
+    restart: unless-stopped
+    ports:
+      - "8787:8787"
+    environment:
+      - MCP_TRANSPORT=sse
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8787
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8787/sse')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower-intervals
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 --cleanup intervals-icu-mcp
+    restart: unless-stopped
