@@ -371,6 +371,15 @@ wheels = [
 ]
 
 [[package]]
+name = "garmin-fit-sdk"
+version = "21.195.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e5/2b/2555e815b62b3cc09557155f9e1c2b83ea1d8a1b5e842629cbf292d17263/garmin_fit_sdk-21.195.0.tar.gz", hash = "sha256:a5bdb7c2d39d58f2e6558a1dcddae3161430cb15417fa5c90d8eaeacf3f8a57a", size = 128748, upload-time = "2026-02-24T20:25:46.802Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/dd/a3/bbbd622ff301d5e4e641a90dbb898d25409bcde214803c288f49146d7207/garmin_fit_sdk-21.195.0-py3-none-any.whl", hash = "sha256:703c74b58040be4a070f53e7790769984cfb6b001b723aeb9831d08bfbac185c", size = 139665, upload-time = "2026-02-24T20:25:45.779Z" },
+]
+
+[[package]]
 name = "h11"
 version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -440,6 +449,7 @@ version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastmcp" },
+    { name = "garmin-fit-sdk" },
     { name = "httpx" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
@@ -458,6 +468,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastmcp", specifier = ">=2.12.4" },
+    { name = "garmin-fit-sdk", specifier = ">=21.195.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "pydantic", specifier = ">=2.12.0" },
     { name = "pydantic-settings", specifier = ">=2.11.0" },

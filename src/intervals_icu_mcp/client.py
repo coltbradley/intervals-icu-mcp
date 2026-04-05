@@ -358,7 +358,8 @@ class ICUClient:
             Histogram with power distribution bins
         """
         response = await self._request("GET", f"/activity/{activity_id}/power-histogram")
-        return Histogram(**response.json())
+        data = response.json()
+        return Histogram(bins=data) if isinstance(data, list) else Histogram(**data)
 
     async def get_hr_histogram(
         self,
@@ -373,7 +374,8 @@ class ICUClient:
             Histogram with HR distribution bins
         """
         response = await self._request("GET", f"/activity/{activity_id}/hr-histogram")
-        return Histogram(**response.json())
+        data = response.json()
+        return Histogram(bins=data) if isinstance(data, list) else Histogram(**data)
 
     async def get_pace_histogram(
         self,
@@ -388,7 +390,8 @@ class ICUClient:
             Histogram with pace distribution bins
         """
         response = await self._request("GET", f"/activity/{activity_id}/pace-histogram")
-        return Histogram(**response.json())
+        data = response.json()
+        return Histogram(bins=data) if isinstance(data, list) else Histogram(**data)
 
     async def get_gap_histogram(
         self,
@@ -403,7 +406,8 @@ class ICUClient:
             Histogram with GAP distribution bins
         """
         response = await self._request("GET", f"/activity/{activity_id}/gap-histogram")
-        return Histogram(**response.json())
+        data = response.json()
+        return Histogram(bins=data) if isinstance(data, list) else Histogram(**data)
 
     # ==================== Wellness Endpoints ====================
 
@@ -706,7 +710,12 @@ class ICUClient:
             params["types"] = ",".join(streams)
 
         response = await self._request("GET", f"/activity/{activity_id}/streams", params=params)
-        return ActivityStreams(**response.json())
+        data = response.json()
+        # API returns a list of {type, data} objects — convert to dict for ActivityStreams
+        if isinstance(data, list):
+            streams_dict = {item["type"]: item.get("data") for item in data}
+            return ActivityStreams(**streams_dict)
+        return ActivityStreams(**data)
 
     async def get_best_efforts(
         self,
