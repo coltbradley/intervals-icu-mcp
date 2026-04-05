@@ -114,7 +114,9 @@ async def get_running_dynamics(
 
     try:
         async with ICUClient(config) as client:
-            fit_bytes = await client.download_fit_file(activity_id)
+            # Use download_activity_file (original FIT) not download_fit_file
+            # (converted FIT) — the converted version strips running dynamics
+            fit_bytes = await client.download_activity_file(activity_id)
 
         result = _parse_fit_dynamics(fit_bytes)
 
